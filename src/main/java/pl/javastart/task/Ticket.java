@@ -13,7 +13,7 @@ public class Ticket {
     private int price;
     private double discount;
 
-    private static int TICKET_COUNTER = 0;
+    private static int ticketCounter = 0;
 
     public Ticket() {
     }
@@ -24,7 +24,7 @@ public class Ticket {
         this.type = type;
         this.price = price;
         this.discount = discount;
-        this.id = ++TICKET_COUNTER;
+        this.id = ++ticketCounter;
     }
 
     public double calculatePrice() {
@@ -58,7 +58,7 @@ public class Ticket {
         address = new Address(street, number);
         price = 100;
         discount = 0.05;
-        this.id = ++TICKET_COUNTER;
+        this.id = ++ticketCounter;
         return new Ticket(eventName, address, type, price, discount);
     }
 }
