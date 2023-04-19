@@ -9,4 +9,12 @@ public class Address {
         this.number = number;
     }
 
+    public String getStreet() {
+        return street;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
 }

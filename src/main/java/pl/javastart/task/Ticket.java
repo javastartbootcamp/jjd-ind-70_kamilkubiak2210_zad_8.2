@@ -3,39 +3,45 @@ package pl.javastart.task;
 import java.util.Scanner;
 
 public class Ticket {
+    public static final String TYPE_ONLINE = "online";
+    public static final String TYPE_STANDARD = "standard";
+    public static final String TYPE_GIFT = "gift";
+    private int id;
     private String eventName;
     private Address address;
     private String type;
     private int price;
     private double discount;
-    protected static int ID = 0;
+
+    private static int TICKET_COUNTER = 0;
 
     public Ticket() {
     }
 
-    public Ticket(String eventName, Address address, String type, int price, double discount, int id) {
+    public Ticket(String eventName, Address address, String type, int price, double discount) {
         this.eventName = eventName;
         this.address = address;
         this.type = type;
         this.price = price;
         this.discount = discount;
-        ID = id;
+        this.id = ++TICKET_COUNTER;
     }
 
     public double calculatePrice() {
-        double finalPrice = price * (1 - discount);
-        return switch (type) {
-            case "Online", "online" -> finalPrice;
-            case "Standard", "standard" -> finalPrice + 5;
-            case "Gift", "gift" -> finalPrice + 5 + (finalPrice * 0.05);
-            default -> finalPrice;
+        double onlinePrice = price * (1 - discount);
+        double standardPrice = onlinePrice + 5;
+        return switch (type.toLowerCase()) {
+            case TYPE_ONLINE -> onlinePrice;
+            case TYPE_STANDARD -> standardPrice;
+            case TYPE_GIFT -> standardPrice + (onlinePrice * 0.05);
+            default -> onlinePrice;
         };
     }
 
     void printTicket(double finalPrice) {
-        System.out.println("Bilet " + type + ": cena podstawowa " + price + ", zniżka " + (int) (discount * 100) + "%"
-                + ", cena finalna wyniesie " + finalPrice + " zł");
-        ID++;
+        System.out.println("Bilet " + type + ": " + eventName + ", ul." + address.getStreet() + " " + address.getNumber()
+                + ", cena podstawowa " + price + ", zniżka " + (int) (discount * 100) + "%" + ", cena finalna wyniesie "
+                + finalPrice + " zł " + "id: " + id);
     }
 
     public Ticket createTicket() {
@@ -49,11 +55,11 @@ public class Ticket {
         String street = sc.nextLine();
         System.out.println("Podaj numer domu/mieszkania/obiektu");
         int number = sc.nextInt();
+        address = new Address(street, number);
         price = 100;
         discount = 0.05;
-        ID++;
-
-        return new Ticket(eventName, new Address(street, number), type, price, discount, ID);
+        this.id = ++TICKET_COUNTER;
+        return new Ticket(eventName, address, type, price, discount);
     }
 }
 
